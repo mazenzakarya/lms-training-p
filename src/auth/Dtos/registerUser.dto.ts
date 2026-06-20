@@ -14,4 +14,7 @@ import { IsEmail, IsNotEmpty, IsString, Min, MinLength } from "class-validator"
     @IsNotEmpty()
     @MinLength(6, { message: 'Password must be at least 6 characters long' })
     public password!: string
+
+    @IsString()
+    public profileImage?:string
 }

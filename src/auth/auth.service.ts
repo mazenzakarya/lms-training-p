@@ -1,4 +1,4 @@
-import {  Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { HashingProvider } from './providers/HashingProvider';
 import { JwtProvider } from './providers/JwtProvider';
 import { UsersRepository } from '../users/users.repo';
@@ -39,7 +39,7 @@ export class AuthService {
         const user = await this.usersRepository.createUser({
             name: dto.name,
             email: dto.email,
-            profileImage: '',
+            profileImage: dto.profileImage,
             password: await this.hashingProvider.hash(dto.password)
         });
         return !!user;
