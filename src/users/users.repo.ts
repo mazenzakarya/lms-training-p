@@ -30,4 +30,9 @@ export class UsersRepository {
     async findById(id: string) {
         return this.userModel.findById(id);
     }
+
+    //find group by user
+    async getUserGroups(id: string){
+        return this.userModel.findById(id).select('groups')
+    }
 }

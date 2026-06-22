@@ -17,7 +17,7 @@ export class AuthService {
     async login(dto: LoginDto) {
         const user = await this.usersRepository.findByEmail(dto.email);
         if (!user) {
-            return false;
+            throw new UnauthorizedException('invalid credintials');
         }
         const isPasswordValid = await this.hashingProvider.compare(dto.password, user.password);
         if (!isPasswordValid) {
@@ -40,6 +40,7 @@ export class AuthService {
             name: dto.name,
             email: dto.email,
             profileImage: dto.profileImage,
+            groups: dto.groupsIds,
             password: await this.hashingProvider.hash(dto.password)
         });
         return !!user;

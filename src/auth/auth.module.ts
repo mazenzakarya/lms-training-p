@@ -5,8 +5,7 @@ import { HashingProvider } from './providers/HashingProvider';
 import { JwtProvider } from './providers/JwtProvider';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigService,ConfigModule } from '@nestjs/config';
-import { StringValue } from 'ms';
+import { ConfigService, ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -16,9 +15,9 @@ import { StringValue } from 'ms';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET_KEY'),
+        secret: configService.getOrThrow<string>('JWT_SECRET_KEY'),
         signOptions: {
-          expiresIn: configService.get<string>('JWT_EXPIRES_IN') as StringValue,
+          expiresIn: parseInt(configService.get<string>('JWT_EXPIRES_IN') ?? '3600', 10),
         },
       }),
     }),

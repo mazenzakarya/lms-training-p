@@ -1,10 +1,11 @@
-import { IsEmail, IsNotEmpty, IsString, Min, MinLength } from "class-validator"
+import { IsArray, IsEmail, IsEnum, IsMongoId, IsNotEmpty, IsString, Min, MinLength } from "class-validator"
+import { Permissions } from "../../group/enums/permissons.enum"
 
- export class RegisterUserDto {
+export class RegisterUserDto {
     @IsString()
     @IsNotEmpty()
     public name!: string
-    
+
     @IsString()
     @IsNotEmpty()
     @IsEmail()
@@ -16,5 +17,9 @@ import { IsEmail, IsNotEmpty, IsString, Min, MinLength } from "class-validator"
     public password!: string
 
     @IsString()
-    public profileImage?:string
+    public profileImage?: string
+
+    @IsArray()
+    @IsMongoId({ each: true })
+    public groupsIds?: string[];
 }

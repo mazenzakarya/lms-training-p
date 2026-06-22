@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { UsersRoles } from "./enums/UsersRoles.enum";
-import { Document } from "mongoose";
+import { Document, Schema as MongooseSchema } from "mongoose";
+import { Group } from "../group/group.model";
+import { IsMongoId, IsOptional, IsString } from "class-validator";
 
 
 @Schema()
@@ -17,8 +19,12 @@ export class User extends Document {
     @Prop({ required: false })
     profileImage?: string;
 
-    @Prop({required: true, enum: UsersRoles, default: UsersRoles.USER})
-    role!: UsersRoles;
+
+    @Prop({
+        type: [{ type: MongooseSchema.Types.ObjectId, ref: () => Group }],
+        default: [],
+    })
+    groups?: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
