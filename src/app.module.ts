@@ -7,6 +7,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GroupModule, } from './group/group.module';
 import { PermissionsModule } from './permissions/permissions.module';
+import { JwtAuthGuard } from './auth/guards/jwt.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { PermissionsGuard } from './permissions/guards/permissions.guard';
 
 @Module({
   imports: [AuthModule, UsersModule, ConfigModule.forRoot({
@@ -19,6 +22,6 @@ import { PermissionsModule } from './permissions/permissions.module';
     }),
   }), GroupModule, PermissionsModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }, { provide: APP_GUARD, useClass: PermissionsGuard }],
 })
 export class AppModule { }

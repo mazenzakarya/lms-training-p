@@ -3,8 +3,6 @@ import { GroupService } from './group.service';
 import { UserPermissionsService } from '../permissions/user-permissions.service';
 import { RequirePermissions } from '../permissions/decorators/permissions.decorator';
 import { Permissions } from './enums/permissons.enum';
-import { JwtAuthGuard } from '../auth/guards/jwt.guard';
-import { PermissionsGuard } from '../permissions/guards/permissions.guard';
 
 @Controller('group')
 export class GroupController {
@@ -19,7 +17,6 @@ export class GroupController {
         return this.groupService.addNewGroup(group)
     }
 
-    @UseGuards(JwtAuthGuard, PermissionsGuard)
     @RequirePermissions(Permissions.UserRead)
     @Get()
     public async getAllGroups() {
