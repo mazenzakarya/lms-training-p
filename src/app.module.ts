@@ -10,6 +10,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { PermissionsGuard } from './permissions/guards/permissions.guard';
+import { CourseModule } from './course/course.module';
 
 @Module({
   imports: [AuthModule, UsersModule, ConfigModule.forRoot({
@@ -20,7 +21,7 @@ import { PermissionsGuard } from './permissions/guards/permissions.guard';
       uri: configService.get('MONGODB_URI'),
       dbName: configService.get('MONGODB_DB_NAME'),
     }),
-  }), GroupModule, PermissionsModule],
+  }), GroupModule, PermissionsModule, CourseModule],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }, { provide: APP_GUARD, useClass: PermissionsGuard }],
 })
