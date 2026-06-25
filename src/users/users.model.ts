@@ -1,8 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { UsersRoles } from "./enums/UsersRoles.enum";
 import { Document, Schema as MongooseSchema } from "mongoose";
 import { Group } from "../group/group.model";
-import { IsMongoId, IsOptional, IsString } from "class-validator";
 
 
 @Schema()
