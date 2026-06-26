@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Schema as MongooseSchema } from "mongoose";
-import { User } from "../users/users.model";
+import { Course } from "../course/course.model";
 
 @Schema()
 export class Lesson extends Document {
@@ -11,7 +11,7 @@ export class Lesson extends Document {
     @Prop()
     content!: string;
 
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: () => Lesson })
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: () => Course.name })
     courseId!: string;
 
 

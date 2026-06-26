@@ -19,7 +19,7 @@ export class User extends Document {
 
 
     @Prop({
-        type: [{ type: MongooseSchema.Types.ObjectId, ref: () => Group }],
+        type: [{ type: MongooseSchema.Types.ObjectId, ref: () => Group.name }],
         default: [],
     })
     groups?: string[];

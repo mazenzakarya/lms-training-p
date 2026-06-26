@@ -5,10 +5,10 @@ import { User } from "../users/users.model";
 
 @Schema()
 export class Enrollment extends Document {
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: () => User })
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: () => User.name, required: true })
     userId!: string;
 
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: () => Course })
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: () => Course.name, required: true })
     courseId!: string;
 
     @Prop()

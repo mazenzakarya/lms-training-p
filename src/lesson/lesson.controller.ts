@@ -24,12 +24,12 @@ export class LessonController {
 
     @Patch(':id')
     public async updateLesson(@Param('id') id: string, @Body() dto: UpdateLessonDto) {
-        return this.lessonService.updateLesson(id, dto);
+        return await this.lessonService.updateLesson(id, dto);
     }
 
     @Delete(':id')
     public async deleteLesson(@Param('id') id: string) {
-        await this.deleteLesson(id)
+        await this.lessonService.deleteLesson(id)
         return { message: "item deleted successfully" }
     }
 }

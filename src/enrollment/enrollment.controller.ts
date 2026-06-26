@@ -7,7 +7,7 @@ export class EnrollmentController {
 
     @Post('/courses/:id/enroll')
     public async addEnrollment(@Param('id') courseId: string, @Req() req) {
-        return await this.enrollmentService.enroll({ userId: req.user.sub, courseId: courseId });
+        return await this.enrollmentService.enroll({ userId: req.user.userId, courseId: courseId });
     }
 
     @Get('/courses/my')
@@ -15,7 +15,7 @@ export class EnrollmentController {
         return this.enrollmentService.getMyCourses(req.user.userId)
     }
 
-    @Delete()
+    @Delete(':id')
     public async deleteEnrollment(id: string){
         return await this.enrollmentService.deleteCourseFromUser(id)
     }
