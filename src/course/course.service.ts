@@ -26,4 +26,5 @@ export class CourseService {
     public async deleteCourse(id: string){
         return this.courseRepository.deleteCourseById(id)
     }
+
 }
