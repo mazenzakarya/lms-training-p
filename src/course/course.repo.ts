@@ -4,6 +4,7 @@ import { Course } from "./course.model";
 import { CreateCourseDto } from "./Dtos/createCourse.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { UpdateCourseDto } from "./Dtos/updateCourse.dto";
+import { Lesson } from "../lesson/lesson.model";
 
 @Injectable()
 export class CoursesRepository {
@@ -12,8 +13,8 @@ export class CoursesRepository {
         private readonly courseModel: Model<Course>
     ) { }
 
-    public async createNewCourse(course: CreateCourseDto, instructorId: string) {
-        const newCourse = new this.courseModel({ ...course, instructorId })
+    public async createNewCourse(course: Partial<Lesson>) {
+        const newCourse = new this.courseModel(course)
         return newCourse.save()
     }
 
@@ -25,22 +26,9 @@ export class CoursesRepository {
         return this.courseModel.findById(id)
     }
 
-    public async editCourseById(dto: UpdateCourseDto, id: string) {
-        const course = await this.courseModel.findById(id);
+    public async update(course: Course) {
+        return await course.save();
 
-        if (!course) {
-            throw new NotFoundException();
-        }
-        if (dto.title) {
-            course.title = dto.title;
-        }
-        if (dto.description) {
-            course.description = dto.description
-        }
-        if (dto.price) {
-            course.price = dto.price;
-        }
-        return course.save()
     }
 
     public async deleteCourseById(id: string) {

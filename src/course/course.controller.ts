@@ -15,7 +15,7 @@ export class CourseController {
     @RequirePermissions(Permissions.UserCreate)
     @Post()
     public async addNewCourse(@Body() dto: CreateCourseDto, @Req() req: Request) {
-        return await this.courseService.addNewCourse(dto, (req as any).user.userId)
+        return await this.courseService.addNewCourse({ ...dto, instructorId: (req as any).user.userId })
     }
     //get all courses without pagination
     @Get()
