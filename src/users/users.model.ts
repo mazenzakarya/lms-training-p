@@ -23,6 +23,9 @@ export class User extends Document {
         default: [],
     })
     groups?: string[];
+
+    @Prop({ required: false })
+    refreshToken?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

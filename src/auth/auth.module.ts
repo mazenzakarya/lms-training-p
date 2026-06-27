@@ -18,6 +18,7 @@ import { ConfigService, ConfigModule } from '@nestjs/config';
         secret: configService.getOrThrow<string>('JWT_SECRET_KEY'),
         signOptions: {
           expiresIn: parseInt(configService.get<string>('JWT_EXPIRES_IN') ?? '3600', 10),
+
         },
       }),
     }),
@@ -27,4 +28,4 @@ import { ConfigService, ConfigModule } from '@nestjs/config';
   controllers: [AuthController],
   exports: [AuthService, HashingProvider, JwtProvider]
 })
-export class AuthModule {}
+export class AuthModule { }

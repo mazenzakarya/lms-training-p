@@ -1,7 +1,7 @@
 import { InjectModel } from "@nestjs/mongoose";
 import { User } from "./users.model";
 import { Model } from "mongoose";
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class UsersRepository {
@@ -32,7 +32,23 @@ export class UsersRepository {
     }
 
     //find group by user
-    async getUserGroups(id: string){
+    async getUserGroups(id: string) {
         return this.userModel.findById(id).select('groups')
+    }
+
+    //update user refresh token
+    public async updateRefreshToken(id: string, refreshToken: string) {
+
+        const user = await this.userModel.findById(id);
+        if (!user) {
+            throw new NotFoundException("User not found");
+        }
+        user.refreshToken = refreshToken;
+        return await user.save();
+    }
+
+    //edit user
+    public async update(user: User) {
+        return user.save()
     }
 }

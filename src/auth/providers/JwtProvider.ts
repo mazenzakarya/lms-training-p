@@ -7,10 +7,16 @@ export class JwtProvider {
     constructor(
         private readonly jwtService: JwtService,
     ) { }
-    public async generateToken(payload: IJwtPayload): Promise<string> {
+    public async generateAccessToken(payload: IJwtPayload): Promise<string> {
         return this.jwtService.signAsync(payload);
     }
-    public async verifyToken(token: string): Promise<IJwtPayload> {
+    public async generateRefreshToken(payload: IJwtPayload): Promise<string> {
+        return this.jwtService.signAsync(payload, { expiresIn: '7d' });
+    }
+    public async verifyAccessToken(token: string): Promise<IJwtPayload> {
+        return this.jwtService.verifyAsync(token);
+    }
+    public async verifyRefreshToken(token: string): Promise<IJwtPayload> {
         return this.jwtService.verifyAsync(token);
     }
 }

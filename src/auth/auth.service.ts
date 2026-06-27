@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { HashingProvider } from './providers/HashingProvider';
 import { JwtProvider } from './providers/JwtProvider';
 import { UsersRepository } from '../users/users.repo';
@@ -27,8 +27,16 @@ export class AuthService {
             sub: user.id,
             email: user.email
         }
-        const jwt = await this.jwtProvider.generateToken(payload)
-        return jwt;
+
+
+        //generate jwt and refresh token
+        const jwt = await this.jwtProvider.generateAccessToken(payload)
+        const refreshToken = await this.jwtProvider.generateRefreshToken(payload)
+        const hashedRefreshToken = await this.hashingProvider.hash(refreshToken);
+        //save hashed refresh token to user
+        await this.usersRepository.updateRefreshToken(user.id, hashedRefreshToken);
+
+        return { jwt, refreshToken };
     }
 
     async register(dto: RegisterUserDto): Promise<boolean> {
@@ -44,5 +52,36 @@ export class AuthService {
             password: await this.hashingProvider.hash(dto.password)
         });
         return !!user;
+    }
+
+    public async refresh(refreshToken: string) {
+        const payload = await this.jwtProvider.verifyRefreshToken(refreshToken);
+        const user = await this.usersRepository.findById(payload.sub)
+        if (user?.refreshToken) {
+            const isValid = await this.hashingProvider.compare(refreshToken, user?.refreshToken)
+            if (isValid) {
+
+                const jwt = await this.jwtProvider.generateAccessToken(payload)
+                const refreshedToken = await this.jwtProvider.generateRefreshToken(payload)
+                //save the new hashed jwt in db
+                const newRefreshdTokenHashed = await this.hashingProvider.hash(refreshedToken)
+                if (user?.refreshToken) {
+                    user.refreshToken = newRefreshdTokenHashed
+                    await user.save();
+                }
+                return { jwt, refreshedToken }
+            }
+        }
+        throw new UnauthorizedException("Invalid refresh token");
+
+    }
+
+    public async logOut(id: string) {
+        const user = await this.usersRepository.findById(id)
+        if (user) {
+            user.refreshToken = ''
+            return await this.usersRepository.update(user)
+        }
+        throw new BadRequestException('something went wrong')
     }
 }
