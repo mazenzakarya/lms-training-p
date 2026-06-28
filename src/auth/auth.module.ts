@@ -6,11 +6,12 @@ import { JwtProvider } from './providers/JwtProvider';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService, ConfigModule } from '@nestjs/config';
+import { UploadModule } from '../upload/upload.module';
 
 @Module({
   imports: [
     UsersModule,
-
+    UploadModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

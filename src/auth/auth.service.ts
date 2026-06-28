@@ -4,6 +4,7 @@ import { JwtProvider } from './providers/JwtProvider';
 import { UsersRepository } from '../users/users.repo';
 import { LoginDto } from './Dtos/login.dto';
 import { RegisterUserDto } from './Dtos/registerUser.dto';
+import { UploadService } from '../upload/upload.service';
 
 
 @Injectable()
@@ -11,7 +12,8 @@ export class AuthService {
     constructor(
         private readonly hashingProvider: HashingProvider,
         private readonly usersRepository: UsersRepository,
-        private readonly jwtProvider: JwtProvider
+        private readonly jwtProvider: JwtProvider,
+        private readonly uploadService: UploadService
     ) { }
 
     async login(dto: LoginDto) {
@@ -39,17 +41,24 @@ export class AuthService {
         return { jwt, refreshToken };
     }
 
-    async register(dto: RegisterUserDto): Promise<boolean> {
+    async register(dto: RegisterUserDto, file: Express.Multer.File): Promise<boolean> {
         const existingUser = await this.usersRepository.findByEmail(dto.email);
         if (existingUser) {
             return false;
         }
+
+        let fileName;
+
+        if (file) {
+            fileName = await this.uploadService.uploadImg(file);
+        }
         const user = await this.usersRepository.createUser({
             name: dto.name,
             email: dto.email,
-            profileImage: dto.profileImage,
+            profileImage: fileName,
             groups: dto.groupsIds,
-            password: await this.hashingProvider.hash(dto.password)
+            password: await this.hashingProvider.hash(dto.password),
+
         });
         return !!user;
     }

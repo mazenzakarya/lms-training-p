@@ -13,6 +13,7 @@ import { PermissionsGuard } from './permissions/guards/permissions.guard';
 import { CourseModule } from './course/course.module';
 import { EnrollmentModule } from './enrollment/enrollment.module';
 import { LessonModule } from './lesson/lesson.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [AuthModule, UsersModule, ConfigModule.forRoot({
@@ -23,7 +24,7 @@ import { LessonModule } from './lesson/lesson.module';
       uri: configService.get('MONGODB_URI'),
       dbName: configService.get('MONGODB_DB_NAME'),
     }),
-  }), GroupModule, PermissionsModule, CourseModule, EnrollmentModule, LessonModule],
+  }), GroupModule, PermissionsModule, CourseModule, EnrollmentModule, LessonModule, UploadModule],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }, { provide: APP_GUARD, useClass: PermissionsGuard }],
 })

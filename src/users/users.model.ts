@@ -26,6 +26,8 @@ export class User extends Document {
 
     @Prop({ required: false })
     refreshToken?: string;
+
+  
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
