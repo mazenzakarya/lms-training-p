@@ -1,11 +1,12 @@
-import { Body, Controller, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './Dtos/login.dto';
 import { RegisterUserDto } from './Dtos/registerUser.dto';
-import { Public } from '../generic/public/public.decorator';
+import { Public } from '../generic/decorators/public/public.decorator';
 import { RefreshTokenDto } from './Dtos/refreshToken.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Multer } from 'multer';
+import { ResponseMessage } from '../generic/decorators/response-message/response-message/response-message.decorator';
 
 
 @Controller('auth')
@@ -15,6 +16,8 @@ export class AuthController {
         private readonly authService: AuthService
     ) { }
 
+    @HttpCode(HttpStatus.OK)
+    @ResponseMessage('login success')
     @Post('login')
     public async login(@Body() dto: LoginDto) {
         return this.authService.login(dto)

@@ -3,7 +3,7 @@ import { CourseService } from './course.service';
 import { CreateCourseDto } from './Dtos/createCourse.dto';
 import { RequirePermissions } from '../permissions/decorators/permissions.decorator';
 import { Permissions } from '../group/enums/permissons.enum';
-import { Public } from '../generic/public/public.decorator';
+import { Public } from '../generic/decorators/public/public.decorator';
 import { UpdateCourseDto } from './Dtos/updateCourse.dto';
 
 @Controller('course')
