@@ -8,13 +8,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { GroupModule, } from './group/group.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { PermissionsGuard } from './permissions/guards/permissions.guard';
 import { CourseModule } from './course/course.module';
 import { EnrollmentModule } from './enrollment/enrollment.module';
 import { LessonModule } from './lesson/lesson.module';
 import { UploadModule } from './upload/upload.module';
 import { TransformerInterceptor } from './generic/interceptors/transformer/transformer.interceptor';
+import { CatchEverythingFilter } from './generic/filters/catchEveryTing.filter';
 
 @Module({
   imports: [AuthModule, UsersModule, ConfigModule.forRoot({
@@ -27,6 +28,10 @@ import { TransformerInterceptor } from './generic/interceptors/transformer/trans
     }),
   }), GroupModule, PermissionsModule, CourseModule, EnrollmentModule, LessonModule, UploadModule],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }, { provide: APP_GUARD, useClass: PermissionsGuard }, { provide: APP_INTERCEPTOR, useClass: TransformerInterceptor }],
+  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: PermissionsGuard },
+    { provide: APP_INTERCEPTOR, useClass: TransformerInterceptor },
+    { provide: APP_FILTER, useClass: CatchEverythingFilter }
+  ],
 })
 export class AppModule { }
