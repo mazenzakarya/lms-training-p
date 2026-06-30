@@ -34,6 +34,12 @@ export class EnrollmentService {
         return userCourses;
     }
 
+    // public async getMyCourseLessons(id: string) {
+    //     const userCoursesLessons = await this.enrollmentRepository.findMany({ userId: id }).populate('courseId').populate('lessonId')
+    //     console.log(userCoursesLessons)
+    //     return userCoursesLessons;
+    // }
+
     public async deleteCourseFromUser(id: string) {
         return this.enrollmentRepository.deleteOne(id)
     }
@@ -47,4 +53,10 @@ export class EnrollmentService {
         return await enrollment.save()
 
     }
+    public async getMyCourseLessons(id: string) {
+        const enrollments = await this.enrollmentRepository
+            .findMany({ userId: id }).populate({ path: 'courseId', populate: { path: 'lessons' } });
+        return enrollments
+    }
+
 }

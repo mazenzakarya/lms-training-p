@@ -19,6 +19,10 @@ export class LessonRepository {
         return this.lessonModel.find().lean();
     }
 
+    public async getByCourseId(courseId: string) {
+        return this.lessonModel.find({ courseId }).lean();
+    }
+
     public async getById(id: string) {
         return this.lessonModel.findById(id);
     }

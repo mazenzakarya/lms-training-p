@@ -11,10 +11,10 @@ export class Lesson extends Document {
     @Prop()
     content!: string;
 
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: () => Course.name })
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: () => Course.name, required: true })
     courseId!: string;
-
 
 }
 
 export const LessonSchema = SchemaFactory.createForClass(Lesson)
+LessonSchema.index({ courseId: 1 });

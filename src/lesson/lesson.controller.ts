@@ -17,6 +17,11 @@ export class LessonController {
         return this.lessonService.getAllLessons()
     }
 
+    @Get('course/:courseId')
+    public async getLessonsByCourse(@Param('courseId') courseId: string) {
+        return this.lessonService.getLessonsByCourseId(courseId);
+    }
+
     @Get(':id')
     public async getLessonById(@Param('id') id: string) {
         return this.lessonService.getLessonById(id)

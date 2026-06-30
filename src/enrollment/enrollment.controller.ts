@@ -16,12 +16,18 @@ export class EnrollmentController {
     }
 
     @Delete(':id')
-    public async deleteEnrollment(id: string){
+    public async deleteEnrollment(id: string) {
         return await this.enrollmentService.deleteCourseFromUser(id)
     }
 
     @Patch()
-    public async editEnrolledCourse(eid: string, cid: string){
-        return await this.editEnrolledCourse(eid, cid)
+    public async editEnrolledCourse(eid: string, cid: string) {
+        return await this.enrollmentService.editEnrollment(eid, cid)
+    }
+
+    @Get('/courses/lessons')
+    public async getMyCoursesLessons(@Req() req) {
+        return await this.enrollmentService.getMyCourseLessons(req.user.userId);
+
     }
 }

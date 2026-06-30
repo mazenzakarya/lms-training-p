@@ -18,6 +18,10 @@ export class LessonService {
         return this.lessonRepository.getAll();
     }
 
+    public async getLessonsByCourseId(courseId: string) {
+        return this.lessonRepository.getByCourseId(courseId);
+    }
+
     public async getLessonById(id: string) {
         const lesson = await this.lessonRepository.getById(id);
 
@@ -61,4 +65,5 @@ export class LessonService {
 
         return { message: "Lesson deleted successfully" };
     }
+
 }

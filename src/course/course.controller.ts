@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Put, Query, Req } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './Dtos/createCourse.dto';
 import { RequirePermissions } from '../permissions/decorators/permissions.decorator';
 import { Permissions } from '../group/enums/permissons.enum';
 import { Public } from '../generic/decorators/public/public.decorator';
 import { UpdateCourseDto } from './Dtos/updateCourse.dto';
+import { PaginationDto } from '../generic/pagination/pagination.dto';
 
 @Controller('course')
 @Public()
@@ -12,7 +13,7 @@ import { UpdateCourseDto } from './Dtos/updateCourse.dto';
 export class CourseController {
     constructor(private readonly courseService: CourseService) { }
     //add new course permission and change this permission
-    @RequirePermissions(Permissions.UserCreate)
+    @RequirePermissions(Permissions.CourseCreate)
     @Post()
     public async addNewCourse(@Body() dto: CreateCourseDto, @Req() req: Request) {
         return await this.courseService.addNewCourse({ ...dto, instructorId: (req as any).user.userId })
@@ -21,6 +22,12 @@ export class CourseController {
     @Get()
     public async getAllCourses() {
         return this.courseService.getAllCourses()
+    }
+
+    // get all paginated
+    @Get('/p')
+    findAll(@Query() paginationDto: PaginationDto) {
+        return this.courseService.findAllPaginated(paginationDto);
     }
 
     //update course

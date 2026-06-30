@@ -2,7 +2,7 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nes
 import { Reflector } from '@nestjs/core';
 import { Response } from 'express';
 import { map, Observable } from 'rxjs';
-import { RESPONSE_MESSAGE_KEY } from '../../decorators/response-message/response-message/response-message.decorator';
+import { RESPONSE_MESSAGE_KEY } from '../../decorators/response-message/response-message.decorator';
 
 @Injectable()
 export class TransformerInterceptor implements NestInterceptor {

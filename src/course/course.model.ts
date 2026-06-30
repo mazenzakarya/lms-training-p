@@ -22,6 +22,19 @@ export class Course extends Document {
         required: true,
     })
     instructorId!: User
+
+
 }
 
 export const CourseSchema = SchemaFactory.createForClass(Course)
+
+
+// Virtual Populate
+CourseSchema.virtual('lessons', {
+    ref: 'Lesson',
+    localField: '_id',
+    foreignField: 'courseId',
+});
+
+CourseSchema.set('toJSON', { virtuals: true });
+CourseSchema.set('toObject', { virtuals: true });

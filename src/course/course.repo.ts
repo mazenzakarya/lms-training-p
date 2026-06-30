@@ -5,6 +5,8 @@ import { CreateCourseDto } from "./Dtos/createCourse.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { UpdateCourseDto } from "./Dtos/updateCourse.dto";
 import { Lesson } from "../lesson/lesson.model";
+import { paginate } from "../generic/pagination/pagination.service";
+import { PaginationDto } from "../generic/pagination/pagination.dto";
 
 @Injectable()
 export class CoursesRepository {
@@ -33,5 +35,14 @@ export class CoursesRepository {
 
     public async deleteCourseById(id: string) {
         return this.courseModel.findByIdAndDelete(id)
+    }
+
+    public async findAllPaginated(dto: PaginationDto) {
+        return paginate(
+            this.courseModel,
+            {},
+            dto.page,
+            dto.limit,
+        );
     }
 }

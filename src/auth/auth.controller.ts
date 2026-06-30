@@ -6,7 +6,7 @@ import { Public } from '../generic/decorators/public/public.decorator';
 import { RefreshTokenDto } from './Dtos/refreshToken.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Multer } from 'multer';
-import { ResponseMessage } from '../generic/decorators/response-message/response-message/response-message.decorator';
+import { ResponseMessage } from '../generic/decorators/response-message/response-message.decorator';
 
 
 @Controller('auth')
